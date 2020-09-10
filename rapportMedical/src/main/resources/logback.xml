@@ -1,0 +1,46 @@
+<configuration scan="true" packagingData="true"> 
+	<!-- Utiliser scan="true" pour rechercher les modifications dans le fichier de configuration 
+	et se reconfigurer automatiquement lorsque ce fichier de change -->
+	<!-- Utiliser packagingData="true" pour ajouter à la journalisation des données d'empaquetage 
+	pour chaque ligne de trace de pile génèrée. Les données d'empaquetage se composent du nom et 
+	de la version du fichier jar d'où provient la classe de la ligne de trace de pile. 
+	Les données d'empaquetage peuvent être très utiles pour identifier les problèmes de version 
+	de logiciel. Cependant, il est assez coûteux à calculer, en particulier dans les applications 2
+	où des exceptions sont fréquemment levées -->	
+
+  <contextName>PaulMedical</contextName>
+  
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- Cet appender logue dans la console -->
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [%file:%line] %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <property name="LOG_PATH" value="log" />
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <!-- Cet appender logue dans un fichier appelé myApp.log -->
+    <file>${LOG_PATH}/myApp.log</file>
+
+    <encoder>
+      <pattern>%date %contextName [%thread] %-5level %logger{36} %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+  </root>
+  
+  <logger name="org.creditMutuel.logger.LoggerInFileImpl" additivity="false">
+  	<!-- Dans le cas où le comportement cumulatif par défaut s'avère ne pas convenir aux
+  	 besoins, vous pouvez le remplacer en définissant l'indicateur d'additivité sur false. 
+  	 Ainsi, une branche de votre arborescence de journalisation peut diriger la sortie 
+  	 vers un ensemble d'appendeurs différents de ceux du reste de l'arborescence. -->
+    <appender-ref ref="FILE" />
+  </logger>
+  
+  <logger name="org.creditMutuel.logger.LoggerInFileImpl" level="WARN"/>
+  
+</configuration>
